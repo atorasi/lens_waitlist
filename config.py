@@ -2,7 +2,7 @@
 
 TWO_CAPTCHA_TOKEN = '' #Токен 2captcha (https://2captcha.com/enterpage)
 
-USE_PROXY = False #Использовать мобильные прокси или нет. True/False, Да/Нет соответственно
+USE_PROXY = False #Использовать МОБИЛЬНЫЕ прокси или нет. True/False, Да/Нет соответственно
 
 PROXY = '' #Мобильные прокси формат - http://LOG:PASS@IP:PORT
 
