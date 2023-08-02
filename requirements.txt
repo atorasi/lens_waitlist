@@ -1,0 +1,5 @@
+tls-client==0.2.1
+pyuseragents==1.0.5
+requests==2.31.0
+2captcha-python==1.2.1
+loguru==0.7.0
