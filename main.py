@@ -14,7 +14,7 @@ from config import SITEKEY, TWO_CAPTCHA_TOKEN, LINK_TO_CHANGE_PROXY_IP, PROXY, U
 from utils import script_exceptions, logger
 
 
-class LensWaitlist():
+class LensWaitlist:
     def __init__(self, email: str, passwd: str, privat: str) -> None:
         self.email = email
         self.password = passwd
