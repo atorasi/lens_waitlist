@@ -57,7 +57,7 @@ class LensWaitlist():
             'user-agent': pyuseragents.random(),
         }
         
-        self.session.proxies.update({'http': PROXY})
+        if USE_PROXY: self.session.proxies.update({'http': PROXY})
 
     @staticmethod
     def change_proxy_ip():
