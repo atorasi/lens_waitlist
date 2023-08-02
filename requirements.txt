@@ -4,3 +4,4 @@ requests
 2captcha-python
 loguru
 imap-tools
+web3
