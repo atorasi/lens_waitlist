@@ -15,3 +15,5 @@ telegram - t.me/tripleshizu
 > Если есть советы по коду напишите в лс @qqrwo - tg. Спасибо.
 
 # Пока
+![image](https://github.com/atorasi/lens_waitlist/assets/121640832/283c8454-a2db-4cb8-8dd6-acc4db756a07)
+
