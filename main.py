@@ -1,8 +1,10 @@
+from __future__ import annotations
+
 import re
 import time
 import json
 import random
-
+from bs4 import BeautifulSoup
 import requests
 import tls_client
 import pyuseragents
@@ -62,7 +64,7 @@ class LensWaitlist:
     @staticmethod
     def change_proxy_ip():
         r = requests.get(LINK_TO_CHANGE_PROXY_IP)
-        time.sleep(10)
+        time.sleep(20)
             
     @staticmethod
     def get_datatime():
@@ -129,32 +131,39 @@ class LensWaitlist:
         json_data = {
             'email': self.email
         }
-        
-        r = self.session.post(url='https://waitlist-server.lens.dev/link/email', json=json_data)
+        url = 'https://waitlist-server.lens.dev/link/email'
+        r = self.session.post(url=url, json=json_data)
         
         return r.status_code
 
-    
     @script_exceptions
     def get_code_from_email(self) -> str | bool:
-        time.sleep(5)
-        with MailBox('outlook.office365.com').login(self.email, self.password) as mailbox:
-            for _ in range(6):
-                mailbox.folder.set('Junk')
-                for msg in mailbox.fetch():
-                    if '@lens.xyz'in str(msg.from_):
-                        link = re.search(
-                            r'[\s\S]+your\ eligibility\ notification![\s\S]+href="([\s\S]+?)"',
-                            msg.html
-                        ).group(1)
-                        logger.info(f'Got the link to the Email verif.')
-                        
-                        return link
-                    
-                    else:   
-                        time.sleep(3)
-            return False
-        
+        time.sleep(7)
+        folders_to_search = ['Inbox', 'Junk']
+
+        for folder in folders_to_search:
+            with MailBox('outlook.office365.com').login(self.email, self.password) as mailbox:
+                for _ in range(6):
+                    mailbox.folder.set(folder)
+                    for msg in mailbox.fetch():
+                        if '@lens.xyz' in str(msg.from_):
+                            soup = BeautifulSoup(msg.html, 'html.parser')
+                            link_elements = soup.find_all('a', {'data-id': 'react-email-button'})
+
+                            for link_element in link_elements:
+                                if 'Verify email for notifications' in link_element.get_text():
+                                    link = link_element['href']
+                                    logger.info(f'Got the link to the Email verif.: {link}')
+                                    return link
+
+                            logger.warning('Link pattern not found in the email.')
+                            logger.debug(f'HTML Content:\n{msg.html}')
+                            return False
+                        else:
+                            time.sleep(3)
+
+        return False
+
     @script_exceptions
     def email_verify(self) -> None:
         link = self.get_code_from_email()
